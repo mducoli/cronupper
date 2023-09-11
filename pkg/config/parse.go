@@ -90,8 +90,12 @@ func Parse() (*types.Config, error) {
 			return nil, fmt.Errorf("Invalid preset: %v", v.Preset)
 		}
 
+		err := replaceEnv(v.Config)
+		if err != nil {
+			return nil, err
+		}
 		mapstructure.Decode(v.Config, &preset)
-		err := preset.Validate()
+		err = preset.Validate()
 		if err != nil {
 			return nil, fmt.Errorf(`Invalid preset configuration in "%v": %v`, k, err)
 		}
@@ -102,6 +106,10 @@ func Parse() (*types.Config, error) {
 		}
 
 		upload_config := to.Config()
+		err = replaceEnv(v.Upload.Config)
+		if err != nil {
+			return nil, err
+		}
 		mapstructure.Decode(v.Upload.Config, &upload_config)
 		err = to.ValidateConfig(upload_config)
 		if err != nil {
