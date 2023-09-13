@@ -1,6 +1,6 @@
 # Cronupper
 
-Schedule cron jobs to backup and upload automatically
+Schedule cron jobs to take and upload backups automatically
 
 ## Presets and uploaders
 
@@ -66,4 +66,12 @@ uploaders:
       endpoint: "s3.eu-west-3.amazonaws.com"
       access_key: ${S3_ACCESS_KEY}
       secret_key: ${S3_SECRET_KEY}
+```
+
+### Run job immediately
+
+With docker compose
+
+```bash
+docker compose exec cronupper /cronupper run [job name]
 ```
