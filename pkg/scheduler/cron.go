@@ -36,7 +36,9 @@ func executeWrapper(job types.Job) func() {
 
 		err := executer.Execute(&job)
 		if err != nil {
-			log.Println(err)
+      log.Printf("%v: Error: %v", job.Id, err)
 		}
+
+    log.Printf(`Job finished: "%v"`, job.Id)
 	}
 }

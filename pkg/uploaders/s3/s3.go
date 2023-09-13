@@ -23,7 +23,7 @@ type S3 struct {
 func (S3) ValidateConfig(conf any) error {
 	var config, ok = conf.(S3Config)
 	if !ok { //shoud probably never happen
-		return fmt.Errorf("Sorry un unexpected error occurred")
+		return fmt.Errorf("Unexpected error")
 	}
 
 	if config.Bucket == "" {
@@ -56,7 +56,7 @@ func (t S3) Upload(path string, name string, c any) error {
 
 	var conf, ok = c.(S3Config)
 	if !ok {
-		return fmt.Errorf("Unexpected error occurred")
+		return fmt.Errorf("Unexpected error")
 	}
 
 	log.Printf(`Uploading to s3: "%v"`, conf.Prefix+name)

@@ -13,8 +13,6 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-var configLocation = "/etc/cronupper/config.yml"
-
 type configParse struct {
 	Jobs map[string]struct {
 		Preset string `yaml:"preset"`
@@ -34,7 +32,7 @@ type configParse struct {
 	} `yaml:"uploaders"`
 }
 
-func Parse() (*types.Config, error) {
+func Parse(configLocation string) (*types.Config, error) {
 
 	// get file
 	file, err := os.ReadFile(configLocation)
@@ -82,7 +80,7 @@ func Parse() (*types.Config, error) {
 	for k, v := range raw.Jobs {
 
 		if v.Cron == "" {
-			return nil, fmt.Errorf(`Empry cron syntax in "%v": "%v"`, k, v.Cron)
+			return nil, fmt.Errorf(`Empty cron syntax in "%v": "%v"`, k, v.Cron)
 		}
 
 		preset, has := presets.Presets[v.Preset]
@@ -108,7 +106,7 @@ func Parse() (*types.Config, error) {
 		upload_config := to.Config()
 		err = replaceEnv(v.Upload.Config)
 		if err != nil {
-			return nil, err
+      return nil, fmt.Errorf("Unexpected error")
 		}
 		mapstructure.Decode(v.Upload.Config, &upload_config)
 		err = to.ValidateConfig(upload_config)

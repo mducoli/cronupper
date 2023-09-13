@@ -39,14 +39,14 @@ func Execute(job *types.Job) error {
 
 	err = job.Preset.Run(filepath)
 	if err != nil {
-		return err
+		return fmt.Errorf("Failed to run preset: %v", err)
 	}
 
 	log.Printf(`%v: Saving done`, job.Id)
 
 	err = job.Upload.To.Upload(filepath, filename, job.Upload.Config)
 	if err != nil {
-		return err
+    return fmt.Errorf("Failed to upload: %v", err)
 	}
 
 	log.Printf(`%v: Uploading done`, job.Id)
